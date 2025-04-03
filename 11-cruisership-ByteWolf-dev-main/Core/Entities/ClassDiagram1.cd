@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Core.Entities.CruiseShip">
+    <Position X="7" Y="2" Width="1.5" />
+    <AssociationLine Name="ShipNames" Type="Core.Entities.ShipName" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="3.312" />
+        <Point X="6.876" Y="3.312" />
+        <Point X="6.876" Y="3.312" />
+        <Point X="6" Y="3.312" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAQAAAAAAAAAIATAAIARAgAAAAAAAAAAAQA=</HashCode>
+      <FileName>Entities\CruiseShip.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShippingCompany" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ShipNames" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Core.Entities.ShippingCompany">
+    <Position X="10" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAQAAAAAAAAAAIAAAAAAQAAAAAAAAAAAIAAAAAABA=</HashCode>
+      <FileName>Entities\ShippingCompany.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Entities.ShipName">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAQAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ShipName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

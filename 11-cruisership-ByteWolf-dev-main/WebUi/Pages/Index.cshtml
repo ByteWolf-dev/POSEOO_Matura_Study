@@ -1,0 +1,18 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model WebUi.Pages.IndexModel
+@{
+    ViewData["Title"] = "Cruiser List";
+}
+
+<div class="row">
+    <h1 class="display-4">Cruiser - Dashboard</h1>
+</div>
+
+<div class="row">
+    <br/>
+    <a asp-page="./CruiseShips/Index">CruiseShips</a>
+    <br/>
+    <a asp-page="./ShippingCompanies/Index">ShippingCompanies</a>
+    <br/>
+</div>
