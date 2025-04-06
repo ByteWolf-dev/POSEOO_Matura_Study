@@ -14,15 +14,84 @@ using Persistence.ImportData;
 
 public class ImportService : IImportService
 {
-    public ImportService()
+    private IUnitOfWork _uow;
+
+    public ImportService(IUnitOfWork uow)
     {
+        _uow = uow;
     }
 
     public async Task ImportDbAsync()
-    {
-        var cruiserCsv = await new CsvImport<CruiserCsv>().ReadAsync("ImportData/Schiffe.txt");
+{
+    var cruiserCsvList = await new CsvImport<CruiserCsv>().ReadAsync("ImportData/Schiffe.txt");
 
-        ///TODO: Import data into database
-        /// you need a uow (Constructor injection)
+    var companyCache = new Dictionary<string, ShippingCompany>(StringComparer.OrdinalIgnoreCase);
+
+    foreach (var csv in cruiserCsvList)
+    {
+        ShippingCompany? company = null;
+        if (!string.IsNullOrWhiteSpace(csv.Reederei))
+        {
+            if (!companyCache.TryGetValue(csv.Reederei, out company))
+            {
+                company = (await _uow.ShippingCompanyRepository.GetAsync())
+                    .FirstOrDefault(c => c.Name == csv.Reederei);
+
+                if (company == null)
+                {
+                    company = new ShippingCompany { Name = csv.Reederei };
+                    await _uow.ShippingCompanyRepository.AddAsync(company);
+                }
+
+                companyCache[csv.Reederei] = company;
+            }
+        }
+
+        var oldNames = new List<string>();
+        var remark = csv.Bemerkungen;
+
+        if (!string.IsNullOrWhiteSpace(remark))
+        {
+            var parts = remark.Split(',');
+            var cleanedParts = new List<string>();
+
+            foreach (var part in parts)
+            {
+                var trimmed = part.Trim();
+                if (trimmed.StartsWith("ex ", StringComparison.OrdinalIgnoreCase))
+                {
+                    var name = trimmed.Substring(3).Trim();
+                    if (!string.IsNullOrWhiteSpace(name))
+                        oldNames.Add(name);
+                }
+                else
+                {
+                    cleanedParts.Add(trimmed);
+                }
+            }
+
+            remark = cleanedParts.Count > 0 ? string.Join(", ", cleanedParts) : null;
+        }
+
+        var ship = new CruiseShip
+        {
+            Name               = csv.Name,
+            YearOfConstruction = csv.BJ,
+            Tonnage            = csv.BRZ.HasValue ? (uint?)Math.Round(csv.BRZ.Value) : null,
+            Length             = csv.Laenge,
+            Cabins             = csv.Kab.HasValue ? (uint?)Math.Round(csv.Kab.Value) : null,
+            Passengers         = csv.Pass.HasValue ? (uint?)Math.Round(csv.Pass.Value) : null,
+            Crew               = csv.Bes.HasValue ? (uint?)Math.Round(csv.Bes.Value) : null,
+            Remark             = remark,
+            ShippingCompany    = company,
+            ShipNames          = oldNames.Select(name => new ShipName { Name = name }).ToList()
+        };
+
+        await _uow.CruiseShipRepository.AddAsync(ship);
     }
+
+    await _uow.SaveChangesAsync();
+}
+
+
 }

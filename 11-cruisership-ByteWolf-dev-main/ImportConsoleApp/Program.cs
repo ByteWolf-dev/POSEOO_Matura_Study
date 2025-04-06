@@ -43,8 +43,8 @@ async Task RecreateDatabaseAsync()
         Console.WriteLine("Deleting database ...");
         await uow.DeleteDatabaseAsync();
 
-//        Console.WriteLine("Creating and migrating database ...");
-//        await uow.CreateDatabaseAsync();
+        Console.WriteLine("Creating and migrating database ...");
+        await uow.CreateDatabaseAsync();
 
         Console.WriteLine("Recreating and migrating database ...");
         await uow.MigrateDatabaseAsync();
