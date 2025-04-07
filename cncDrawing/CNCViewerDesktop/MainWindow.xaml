@@ -1,0 +1,16 @@
+﻿<Window x:Class="CNCViewerDesktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CNCViewerDesktop" 
+        xmlns:viewmodels="clr-namespace:CNCViewerDesktop.ViewModels" 
+        xmlns:Controls="clr-namespace:CNCViewerDesktop.Controls" 
+        mc:Ignorable="d"
+        Title="CNC Viewer" Height="450" Width="600">
+    <Grid>
+
+        <Controls:DrawingControl Pattern="{Binding DrawingControl.Pattern}" />
+
+    </Grid>
+</Window>
