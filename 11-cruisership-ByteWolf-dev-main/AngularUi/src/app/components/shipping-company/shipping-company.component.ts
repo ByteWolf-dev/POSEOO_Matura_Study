@@ -18,19 +18,23 @@ export class ShippingCompanyComponent implements OnInit {
     name : '',
   }
 
+  
+
   constructor(private route: ActivatedRoute, private cruiserService: CruiserService, private router: Router) {}
 
   ngOnInit(): void {
     //TODO get id from route and load company
     this.route.params.subscribe(params => {
       this.id = +params['id'];
-      //TODO
+      this.load()
     });
   }
 
   load(): void {
     this.cruiserService.getCompany(this.id).subscribe({
       next: data=>{
+        this.company = data;
+        console.log(this.company);
       },
       error: error=>{
         console.error('Error loading company:', error);
@@ -38,9 +42,12 @@ export class ShippingCompanyComponent implements OnInit {
     });
   }
 
-  /*
+  
   editCompany(company: ShippingCompanyDto): void {
     this.router.navigate(['/edit-shipping-company',company.id]);
-  } 
-  */ 
+  }
+  
+  onShipSelected(ship: CruiserShipDto): void {
+    console.log("User selected ship:", ship);
+  }
 }

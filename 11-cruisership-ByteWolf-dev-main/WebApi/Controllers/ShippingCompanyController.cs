@@ -125,16 +125,16 @@ public class ShippingCompanyController : ControllerBase
     /// </summary>
     /// <param name="sort">Optional sort by property.</param>
     /// <returns></returns>
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ShippingCompanyDto>>> GetAsync(string? sort)
+    [HttpGet("overview")]
+    public async Task<ActionResult<List<ShippingCompanyDto>>> GetAsync(string? sort)
     {
-        //TODO: Implement 
-        // => use untracked entities
-        // use for include in generic repository: nameof(ShippingCompany.CruiseShips),$"{nameof(ShippingCompany.CruiseShips)}.{nameof(CruiseShip.ShipNames)}"
+        var allEntities = (await _uow.ShippingCompanyRepository.GetAsync(includeProperties: ["CruiseShips", "CruiseShips.ShipNames"]))
+            .ToList()
+            .Select(ToDto)
+            .ToList();
+        
+        return await this.NotFoundOrOk(allEntities);
 
-        //return await this.NotFoundOrOk(ToDto(allEntities));
-
-        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -145,14 +145,13 @@ public class ShippingCompanyController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ShippingCompanyDto>> GetAsync(int id)
     {
-        throw new NotImplementedException();
 
-        //var entity = await _uow.ShippingCompanyRepository.GetByIdAsync(id,
-        //    nameof(ShippingCompany.CruiseShips),
-        //    $"{nameof(ShippingCompany.CruiseShips)}.{nameof(CruiseShip.ShipNames)}"
-        //);
+        var entity = await _uow.ShippingCompanyRepository.GetByIdAsync(id,
+            nameof(ShippingCompany.CruiseShips),
+            $"{nameof(ShippingCompany.CruiseShips)}.{nameof(CruiseShip.ShipNames)}"
+        );
         
-        // return await this.NotFoundOrOk(ToDto(entity));
+        return await this.NotFoundOrOk(ToDto(entity));
     }
 
     /// <summary>
@@ -197,17 +196,14 @@ public class ShippingCompanyController : ControllerBase
             {
                 return NotFound();
             }
-
-            throw new NotImplementedException();
-
-            /*
+            
             entity.Name     = value.Name;
             entity.Street   = value.Street;
             entity.StreetNo = value.StreetNo;
             entity.City     = value.City;
             entity.PLZ      = value.Plz;
-            */
-
+            
+            await _uow.SaveChangesAsync();
             await trans.CommitTransactionAsync();
         }
 

@@ -6,7 +6,9 @@ import { EditShippingCompanyComponent } from './components/edit-shipping-company
 
 const routes: Routes = [
   {path: 'shipping-companies', component: ShippingCompaniesComponent},
-  {path: '', redirectTo: '/shipping-companies', pathMatch: 'full'}
+  {path: '', redirectTo: '/shipping-companies', pathMatch: 'full'},
+  {path: 'shipping-company-detail/:id', component: ShippingCompanyComponent},
+  {path: 'edit-shipping-company/:id', component: EditShippingCompanyComponent}
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ShippingCompanyDto } from 'src/app/models/shipping-company-dto.model';
@@ -34,7 +34,7 @@ export class EditShippingCompanyComponent implements OnInit {
     if (form.valid) {
       this.cruiserService.updateCompany(this.company).subscribe({
         next: () => {
-          //TODO route to shipping-company
+          this.router.navigate(["shipping-company-detail", this.company.id]);
         },
         error: (error) => {
           alert('Shipping-Company could not be saved ' + error.message);
@@ -42,4 +42,11 @@ export class EditShippingCompanyComponent implements OnInit {
       });
     }
   }
+
+  load() {
+    this.cruiserService.getCompany(this.id).subscribe(data => {
+      this.company = data;
+    })
+  };
+
 }
