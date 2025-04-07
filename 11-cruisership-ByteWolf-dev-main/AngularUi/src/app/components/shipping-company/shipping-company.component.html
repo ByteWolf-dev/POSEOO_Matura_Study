@@ -11,8 +11,13 @@
       </dd>
     </dl>
     <hr />
-    <td><button class="btn btn-info btn-sm">Edit</button></td>
+    <td><button class="btn btn-info btn-sm" (click)="editCompany(company)">Edit</button></td>
   </div>
+
+  <app-ship-stats-panel
+    [ships]="company?.cruiseShips || []"
+    (shipSelected)="onShipSelected($event)">
+  </app-ship-stats-panel>
 
   <h2>Ships</h2>
   <table class="table table-sm">
@@ -24,11 +29,11 @@
     </tr>
     </thead>
     <tbody>
-      <ng-container>
-        <tr>
-          <td>{{ship.name}}</td>
-          <td>{{ship.yearOfConstruction}}</td>
-        </tr>
+      <ng-container *ngFor="let ship of company.cruiseShips">
+          <tr>
+            <td>{{ship.name}}</td>
+            <td>{{ship.yearOfConstruction}}</td>
+          </tr>
       </ng-container>
     </tbody>
   </table>

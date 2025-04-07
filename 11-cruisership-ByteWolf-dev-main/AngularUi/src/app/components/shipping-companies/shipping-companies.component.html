@@ -12,9 +12,11 @@
     <tbody>
       <ng-container *ngFor="let company of companies">
         <tr>
-          <td>{{ company.companyName }}</td>
+          <td>{{ company.name }}</td>
           <!--  button must not be visible if no company is available -->
-          <td><button class="btn btn-info btn-sm" (click)="showDetail(company)">Ships</button></td>
+          <ng-container *ngIf="company.name !== '<No Company>'">
+            <td><button class="btn btn-info btn-sm" (click)="showDetail(company)" >Ships</button></td>
+          </ng-container>
         </tr>
       </ng-container>
     </tbody>

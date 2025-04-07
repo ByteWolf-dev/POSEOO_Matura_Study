@@ -1,0 +1,23 @@
+<div *ngIf="ships?.length; else noData">
+    <h5 class="mt-4">Ship Statistics</h5>
+    <ul class="list-group">
+      <li class="list-group-item">Average Year of Construction: {{ averageYear ?? 'N/A' }}</li>
+      <li class="list-group-item">Total Passenger Capacity: {{ totalPassengers }}</li>
+      <li class="list-group-item">Average Crew: {{ averageCrew ?? 'N/A' }}</li>
+      <li class="list-group-item">Ships with Remarks: {{ shipsWithRemarks }}</li>
+    </ul>
+  
+    <div class="mt-3">
+      <h6>Select a ship</h6>
+      <ul>
+        <li *ngFor="let ship of ships">
+          <button class="btn btn-link p-0" (click)="selectShip(ship)">{{ ship.name }}</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <ng-template #noData>
+    <p>No ship data available.</p>
+  </ng-template>
+  
